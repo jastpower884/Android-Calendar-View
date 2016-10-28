@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -268,6 +269,7 @@ public class CustomCalendarView extends LinearLayout {
             inflater = LayoutInflater.from(context);
         }
 
+        @NonNull
         @Override
         public View getView(int position, View view, ViewGroup parent) {
             // day in question
