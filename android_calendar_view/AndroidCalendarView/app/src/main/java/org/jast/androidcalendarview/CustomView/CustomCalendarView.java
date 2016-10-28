@@ -36,11 +36,18 @@ public class CustomCalendarView extends LinearLayout {
     // default date format
     private static final String DATE_FORMAT = "MMM yyyy";
 
+
     // date format
     private String dateFormat;
 
     // current displayed month
     private Calendar currentDate = Calendar.getInstance();
+
+    // date min which user can select
+    private Calendar minDate;
+
+    // date max which user can select
+    private Calendar maxDate;
 
     //event handling
     private EventHandler eventHandler = null;
@@ -141,10 +148,66 @@ public class CustomCalendarView extends LinearLayout {
                 if (eventHandler == null)
                     return false;
 
-                eventHandler.onDayLongPress((Date) view.getItemAtPosition(position));
+                eventHandler.onDayLongPress((Calendar) view.getItemAtPosition(position));
                 return true;
             }
         });
+
+        // press a day
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Calendar theDayPress = (Calendar) parent.getItemAtPosition(position);
+
+                // if the date is not during max date or min date
+                // maybe I should not use during
+                if (!isTheDateBeforeMaxDate(theDayPress) || !isTheDateAfterMinDate(theDayPress)) {
+                    return;
+                }
+
+
+                Log.v(LOGTAG, "position:" + position);
+                if (eventHandler == null)
+                    return;
+
+                eventHandler.onDayLongPress(theDayPress);
+            }
+
+        });
+
+    }
+
+    /**
+     * Check input date before Max Date if maxDate not null
+     */
+    private boolean isTheDateBeforeMaxDate(Calendar date) {
+
+        Log.v(LOGTAG,"is The Date Before Min Date month"+date.get(Calendar.MONTH)+" day:"+date.get(Calendar.DAY_OF_MONTH));
+        Log.v(LOGTAG,"is The Date Before Min Date month"+maxDate.get(Calendar.MONTH)+" day:"+maxDate.get(Calendar.DAY_OF_MONTH));
+        Log.v(LOGTAG," \n");
+
+        // if minDate is null,then forget it.
+        return maxDate != null && date.before(maxDate);
+
+
+    }
+
+
+    /**
+     * Check input date after Min Date if maxDate not null
+     */
+    private boolean isTheDateAfterMinDate(Calendar date) {
+
+//        Log.v(LOGTAG,"is The Date After Min Date month"+date.get(Calendar.MONTH)+" day:"+date.get(Calendar.DAY_OF_MONTH));
+//        Log.v(LOGTAG,"is The Date After Min Date month"+minDate.get(Calendar.MONTH)+" day:"+minDate.get(Calendar.DAY_OF_MONTH));
+        Log.v(LOGTAG,"\n");
+
+        // if minDate is null,then forget it.
+        return minDate != null && date.after(minDate);
+
+
     }
 
     /**
@@ -170,13 +233,10 @@ public class CustomCalendarView extends LinearLayout {
 
         // fill cells
         while (cells.size() < DAYS_COUNT) {
-            //Because  direct put the calendar into list will make all list same.
+            //because  direct put the calendar into list will make all list same.
             //so need to use the copy.
             cells.add((Calendar) calendar.clone());
             calendar.add(Calendar.DATE, 1);
-
-            int day = calendar.get(Calendar.DATE);
-            Log.v(LOGTAG, "day:" + day);
         }
 
         // update grid
@@ -213,7 +273,6 @@ public class CustomCalendarView extends LinearLayout {
             // day in question
             Calendar date = getItem(position);
             int day = date.get(Calendar.DATE);
-//            Log.v(LOGTAG, "day:" + day);
             int month = date.get(Calendar.MONTH);
             int year = date.get(Calendar.YEAR);
 
@@ -240,11 +299,14 @@ public class CustomCalendarView extends LinearLayout {
 
             // clear styling
             ((TextView) view).setTypeface(null, Typeface.NORMAL);
-            ((TextView) view).setTextColor(Color.BLACK);
+            ((TextView) view).setTextColor(ContextCompat.getColor(this.getContext(), R.color.greyed_out));
 
-            if (month != currentDate.get(Calendar.MONTH) || year != currentDate.get(Calendar.YEAR)) {
+//            Log.v(LOGTAG,"is The Date After Min Date:"+isTheDateBeforeMaxDate(today)+" is The Date Before Max Date month:"+minDate.get(Calendar.DAY_OF_MONTH));
+
+            if (month == currentDate.get(Calendar.MONTH) && year == currentDate.get(Calendar.YEAR)
+                    && isTheDateBeforeMaxDate(date) && isTheDateAfterMinDate(date)) {
                 // if this day is outside current month, grey it out
-                ((TextView) view).setTextColor(ContextCompat.getColor(this.getContext(), R.color.greyed_out));
+                ((TextView) view).setTextColor(Color.BLACK);
             } else if (month == today.get(Calendar.MONTH) && year == today.get(Calendar.YEAR) && day == today.get(Calendar.DATE)) {
                 // if it is today, set it to blue/bold
                 ((TextView) view).setTypeface(null, Typeface.BOLD);
@@ -270,6 +332,39 @@ public class CustomCalendarView extends LinearLayout {
      * the outside world
      */
     public interface EventHandler {
-        void onDayLongPress(Date date);
+        void onDayLongPress(Calendar date);
+    }
+
+    /**
+     * Set the max Date which user can select.
+     */
+    public void setMaxDate(Calendar maxDate) {
+        this.maxDate = maxDate;
+    }
+
+
+    /**
+     * Set the min Date which user can select.
+     */
+    public void setMinDate(Calendar minDate) {
+        this.minDate = minDate;
+    }
+
+
+    /**
+     * Set the max Date which user can select.
+     */
+    public void setMaxDate(long maxDateMillionSecond) {
+        maxDate = Calendar.getInstance();
+        maxDate.setTimeInMillis(maxDateMillionSecond);
+    }
+
+
+    /**
+     * Set the min Date which user can select.
+     */
+    public void setMinDate(long minDateMillionSecond) {
+        minDate = Calendar.getInstance();
+        minDate.setTimeInMillis(minDateMillionSecond);
     }
 }
