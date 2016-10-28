@@ -8,6 +8,6 @@ public class GridViewCalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grid_view_calenda_r);
+        setContentView(R.layout.activity_grid_view_calendar);
     }
 }

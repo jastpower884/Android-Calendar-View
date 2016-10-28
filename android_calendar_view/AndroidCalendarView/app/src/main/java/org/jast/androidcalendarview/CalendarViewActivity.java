@@ -2,17 +2,10 @@ package org.jast.androidcalendarview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.CalendarView;
 
 import java.util.Calendar;
-import java.util.Locale;
 
-
-/**
- *
- *
- * */
 public class CalendarViewActivity extends AppCompatActivity {
 
     private static final int MAX_DATE_AFTER_TODAY = 7;
