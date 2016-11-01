@@ -184,13 +184,8 @@ public class CustomCalendarView extends LinearLayout {
      * Check input date before Max Date if maxDate not null
      */
     private boolean isTheDateBeforeMaxDate(Calendar date) {
-
-        Log.v(LOGTAG,"is The Date Before Min Date month"+date.get(Calendar.MONTH)+" day:"+date.get(Calendar.DAY_OF_MONTH));
-        Log.v(LOGTAG,"is The Date Before Min Date month"+maxDate.get(Calendar.MONTH)+" day:"+maxDate.get(Calendar.DAY_OF_MONTH));
-        Log.v(LOGTAG," \n");
-
         // if minDate is null,then forget it.
-        return maxDate != null && date.before(maxDate);
+        return maxDate == null || date.before(maxDate);
 
 
     }
@@ -200,13 +195,8 @@ public class CustomCalendarView extends LinearLayout {
      * Check input date after Min Date if maxDate not null
      */
     private boolean isTheDateAfterMinDate(Calendar date) {
-
-//        Log.v(LOGTAG,"is The Date After Min Date month"+date.get(Calendar.MONTH)+" day:"+date.get(Calendar.DAY_OF_MONTH));
-//        Log.v(LOGTAG,"is The Date After Min Date month"+minDate.get(Calendar.MONTH)+" day:"+minDate.get(Calendar.DAY_OF_MONTH));
-        Log.v(LOGTAG,"\n");
-
         // if minDate is null,then forget it.
-        return minDate != null && date.after(minDate);
+        return minDate == null || date.after(minDate);
 
 
     }
