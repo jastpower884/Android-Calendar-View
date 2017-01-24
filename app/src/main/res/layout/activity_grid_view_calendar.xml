@@ -11,7 +11,7 @@
     tools:context="org.jast.androidcalendarview.GridViewCalendarActivity">
 
 
-    <org.jast.androidcalendarview.CustomView.CustomCalendarView
+    <org.jast.androidcalendarview.CustomView.CalendarView
         android:id="@+id/calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -3,6 +3,7 @@ package org.jast.androidcalendarview;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.jast.androidcalendarview.CustomView.CalendarView;
 import org.jast.androidcalendarview.CustomView.CustomCalendarView;
 
 import java.util.Calendar;
@@ -12,14 +13,14 @@ public class GridViewCalendarActivity extends AppCompatActivity {
     private static final int MAX_DATE_AFTER_TODAY = 7;
     private static final int MIN_DATE_AFTER_TODAY = -1;
 
-    CustomCalendarView mCustomCalendarVie;
+    CalendarView mCustomCalendarVie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grid_view_calendar);
 
-        mCustomCalendarVie = (CustomCalendarView) findViewById(R.id.calendar_view);
+        mCustomCalendarVie = (CalendarView) findViewById(R.id.calendar_view);
 
 
         Calendar maxDate = Calendar.getInstance();
